@@ -14,7 +14,7 @@ enum Type: String, Decodable {
     case comment = "comment"
 }
 
-struct Story: Decodable, Identifiable {
+struct Story: Decodable, Identifiable, Hashable {
     let by: String
     let descendants: Int?
     let id: Int

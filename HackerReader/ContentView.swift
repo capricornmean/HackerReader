@@ -9,6 +9,7 @@ import SwiftUI
 
 struct StoryRow: View {
     let story: Story
+
     var body: some View {
         VStack(alignment: .leading) {
             Text(story.title)
@@ -28,26 +29,79 @@ struct StoryRow: View {
     }
 }
 
+struct ErrorRow: View {
+    var error: Error
+    var retry: () async -> Void
+    
+    var body: some View {
+        VStack {
+            Text(error.localizedDescription)
+                .font(.caption)
+                .foregroundColor(.secondary)
+            Button("Retry") {
+                Task { await retry() }
+            }
+        }
+    }
+}
+
+struct StoryDetailView: View {
+    var story: Story
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text(story.title)
+                .font(.title2)
+                .navigationTitle("Story")
+            HStack {
+                Text(story.by)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                Text("\(story.score)")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            if let stringURL = story.url, let url = URL(string: stringURL) {
+                Link("Read article", destination: url)
+            }
+            Spacer()
+        }
+    }
+}
+
 struct ContentView: View {
     @State private var viewModel = StoryListViewModel(service: HackerNewsService())
     
     var body: some View {
         NavigationStack {
-            if let error = viewModel.error {
-                Text(error.localizedDescription)
+            if let error = viewModel.error, viewModel.stories.isEmpty {
+                ErrorRow(error: error) {
+                    await viewModel.retryInitial()
+                }
             } else {
                 List {
                     ForEach(viewModel.stories) { story in
-                        StoryRow(story: story)
-                            .onAppear {
-                                if story.id == viewModel.stories[max(0, viewModel.stories.count - 5)].id {
-                                    Task { await viewModel.loadMore() }
+                        NavigationLink(value: story) {
+                            StoryRow(story: story)
+                                .onAppear {
+                                    if viewModel.stories.count >= 5,
+                                       story.id == viewModel.stories[viewModel.stories.count - 5].id {
+                                        Task { await viewModel.loadMore() }
+                                    }
                                 }
-                            }
+                        }
                     }
                     if viewModel.isLoading {
                         ProgressView()
                     }
+                    if let error = viewModel.error {
+                        ErrorRow(error: error) {
+                            await viewModel.retryMore()
+                        }
+                    }
+                }
+                .navigationDestination(for: Story.self) { story in
+                    StoryDetailView(story: story)
                 }
             }
         }
@@ -58,6 +112,5 @@ struct ContentView: View {
 }
 
 #Preview {
-//    StoryRow(story: Story(by: "mai", descendants: 0, id: 111, kids: [], score: 100, time: Date(), title: "Hello Mai", type: .story, url: nil))
     ContentView()
 }

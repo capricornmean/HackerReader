@@ -10,9 +10,9 @@ import Foundation
 @MainActor @Observable
 class StoryListViewModel {
     private var storyIDs: [Int] = []
-    var stories: [Story] = []
-    var isLoading: Bool = false
-    var error: Error?
+    private(set) var stories: [Story] = []
+    private(set) var isLoading: Bool = false
+    private(set) var error: Error?
     private var offset: Int = 0
     
     private let service: StoryFetchingProtocol
@@ -38,6 +38,16 @@ class StoryListViewModel {
         } catch {
             self.error = error
         }
+    }
+    
+    func retryInitial() async {
+        error = nil
+        await loadInitial()
+    }
+    
+    func retryMore() async {
+        error = nil
+        await loadMore()
     }
     
     // MARK: - Private
