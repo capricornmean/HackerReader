@@ -24,4 +24,12 @@ struct CommentNode: Identifiable {
     let depth: Int
     
     var id: Int { comment.id }
+    
+    func isValid() -> Bool {
+        !(comment.deleted == true || comment.dead == true)
+    }
+    
+    func getText() -> String {
+        comment.text?.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression) ?? ""
+    }
 }

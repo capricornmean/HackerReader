@@ -8,33 +8,33 @@
 import SwiftUI
 
 struct StoryListView: View {
-    @State private var viewModel = StoryViewModel(service: HackerNewsService())
+    @State private var storyVM = StoryViewModel(service: HackerNewsService())
     
     var body: some View {
         NavigationStack {
-            if let error = viewModel.error, viewModel.stories.isEmpty {
+            if let error = storyVM.error, storyVM.stories.isEmpty {
                 ErrorRow(error: error) {
-                    await viewModel.retryInitial()
+                    await storyVM.retryInitial()
                 }
             } else {
                 List {
-                    ForEach(viewModel.stories) { story in
+                    ForEach(storyVM.stories) { story in
                         NavigationLink(value: story) {
                             StoryRow(story: story)
                                 .onAppear {
-                                    if viewModel.stories.count >= 5,
-                                       story.id == viewModel.stories[viewModel.stories.count - 5].id {
-                                        Task { await viewModel.loadMore() }
+                                    if storyVM.stories.count >= 5,
+                                       story.id == storyVM.stories[storyVM.stories.count - 5].id {
+                                        Task { await storyVM.loadMore() }
                                     }
                                 }
                         }
                     }
-                    if viewModel.isLoading {
+                    if storyVM.isLoading {
                         ProgressView()
                     }
-                    if let error = viewModel.error {
+                    if let error = storyVM.error {
                         ErrorRow(error: error) {
-                            await viewModel.retryMore()
+                            await storyVM.retryMore()
                         }
                     }
                 }
@@ -44,7 +44,7 @@ struct StoryListView: View {
             }
         }
         .task {
-            await viewModel.loadInitial()
+            await storyVM.loadInitial()
         }
     }
 }

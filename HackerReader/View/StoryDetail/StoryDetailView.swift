@@ -9,6 +9,7 @@ import SwiftUI
 
 struct StoryDetailView: View {
     var story: Story
+    @State private var commentVM = CommentViewModel(service: HackerNewsService())
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -26,9 +27,14 @@ struct StoryDetailView: View {
             if let stringURL = story.url, let url = URL(string: stringURL) {
                 Link("Read article", destination: url)
             }
-//            List {
-//                ForEach(, content: <#T##(Int) -> View#>)
-//            }
+            List {
+                ForEach(commentVM.nodes) { node in
+                    CommentRow(node: node)
+                }
+            }
+        }
+        .task {
+            await commentVM.load(rootIDs: story.kids ?? [])
         }
     }
 }
