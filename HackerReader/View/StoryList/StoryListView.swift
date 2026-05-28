@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  StoryListView.swift
 //  HackerReader
 //
 //  Created by mai on 5/23/26.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct StoryListView: View {
     @State private var viewModel = StoryViewModel(service: HackerNewsService())
     
     var body: some View {
@@ -50,5 +50,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    StoryListView()
 }

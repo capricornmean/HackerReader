@@ -15,6 +15,6 @@ struct Story: Decodable, Identifiable, Hashable {
     let score: Int
     let time: Date
     let title: String
-    let type: Type
+    let type: HNItemType
     let url: String?
 }

@@ -19,7 +19,9 @@ struct Comment: Decodable, Identifiable, Hashable {
     let dead: Bool?
 }
 
-struct CommentNode {
+struct CommentNode: Identifiable {
     let comment: Comment
     let depth: Int
+    
+    var id: Int { comment.id }
 }

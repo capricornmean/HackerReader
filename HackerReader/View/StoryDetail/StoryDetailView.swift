@@ -26,7 +26,9 @@ struct StoryDetailView: View {
             if let stringURL = story.url, let url = URL(string: stringURL) {
                 Link("Read article", destination: url)
             }
-            Spacer()
+//            List {
+//                ForEach(, content: <#T##(Int) -> View#>)
+//            }
         }
     }
 }

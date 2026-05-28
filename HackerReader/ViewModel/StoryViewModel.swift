@@ -31,13 +31,9 @@ class StoryViewModel {
         isLoading = true
         defer { isLoading = false }
         let newStoryIDs = Array(storyIDs[offset..<min(offset + 20, storyIDs.count)])
-        do {
-            let newStories = try await service.fetchStories(ids: newStoryIDs)
-            stories.append(contentsOf: newStories)
-            offset += newStoryIDs.count
-        } catch {
-            self.error = error
-        }
+        let newStories = await service.fetchStories(ids: newStoryIDs)
+        stories.append(contentsOf: newStories)
+        offset += newStoryIDs.count
     }
     
     func retryInitial() async {

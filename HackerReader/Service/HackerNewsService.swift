@@ -7,12 +7,6 @@
 
 import Foundation
 
-enum FetchError: Error {
-    case invalidURL
-    case invalidResponse
-    case responseError(Int)
-}
-
 struct HackerNewsService {
     private static let decoder: JSONDecoder = {
         let decoder = JSONDecoder()
@@ -56,7 +50,6 @@ extension HackerNewsService: StoryFetchingProtocol {
         }
     }
 
-    // MARK: - private
     private func fetchStory(id: Int) async throws -> Story {
         guard let url = URL(string: "https://hacker-news.firebaseio.com/v0/item/\(id).json") else { throw FetchError.invalidURL }
         return try await fetchHelper(url)
@@ -65,6 +58,41 @@ extension HackerNewsService: StoryFetchingProtocol {
 
 extension HackerNewsService: CommentFetchingProtocol {
     func fetchCommentTree(rootIDs: [Int]) async -> [CommentNode] {
-        <#code#>
+        await withTaskGroup(of: (Int, [CommentNode]).self) { group in
+            for (index, rootID) in rootIDs.enumerated() {
+                group.addTask {
+                    (index, await fetchSubtree(id: rootID, depth: 0))
+                }
+            }
+            var result: [[CommentNode]] = .init(repeating: [], count: rootIDs.count)
+            for await (index, subtree) in group {
+                result[index] = subtree
+            }
+            return result.flatMap{ $0 }
+        }
+    }
+    
+    private func fetchSubtree(id: Int, depth: Int) async -> [CommentNode] {
+        guard let comment = try? await fetchComment(id: id) else { return [] }
+        let node = CommentNode(comment: comment, depth: depth)
+        guard let kids = comment.kids, !kids.isEmpty else { return [node] }
+        return await withTaskGroup(of: (Int, [CommentNode]).self) { group in
+            for (index, kid) in kids.enumerated() {
+                group.addTask {
+                    (index, await fetchSubtree(id: kid, depth: depth + 1))
+                }
+            }
+            
+            var children: [[CommentNode]] = .init(repeating: [], count: kids.count)
+            for await (index, subtree) in group {
+                children[index] = subtree
+            }
+            return [node] + children.flatMap{ $0 }
+        }
+    }
+
+    private func fetchComment(id: Int) async throws -> Comment {
+        guard let url = URL(string: "https://hacker-news.firebaseio.com/v0/item/\(id).json") else { throw FetchError.invalidURL }
+        return try await fetchHelper(url)
     }
 }

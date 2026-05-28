@@ -6,5 +6,6 @@
 //
 
 protocol StoryFetchingProtocol {
-    func fetchCommentTree(rootIDs: [Int]) async -> [CommentNode]
+    func fetchTopStoryIDs() async throws -> [Int]
+    func fetchStories(ids: [Int]) async -> [Story]
 }

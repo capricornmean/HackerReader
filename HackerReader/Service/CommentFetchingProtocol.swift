@@ -6,4 +6,5 @@
 //
 
 protocol CommentFetchingProtocol {
+    func fetchCommentTree(rootIDs: [Int]) async -> [CommentNode]
 }
