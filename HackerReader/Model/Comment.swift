@@ -18,9 +18,13 @@ struct Comment: Decodable, Identifiable, Hashable {
     let deleted: Bool?
     let dead: Bool?
 
-    var isValid: Bool { !(deleted == true || dead == true) }
+    var displayText: String { isValid ? textWithoutHTMLTag : "[deleted]" }
     
-    var textWithoutHTMLTag: String { text?.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression) ?? "" }
+    var displayAuthor: String { isValid ? by ?? "" : "[deleted]" }
+    
+    private var isValid: Bool { !(deleted == true || dead == true) }
+    
+    private var textWithoutHTMLTag: String { text?.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression) ?? "" }
 }
 
 struct CommentNode: Identifiable {

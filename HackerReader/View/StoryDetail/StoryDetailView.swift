@@ -14,10 +14,9 @@ struct StoryDetailView: View {
     var body: some View {
         List {
             Section("Story") {
-                VStack {
+                VStack(alignment: .leading) {
                     Text(story.title)
                         .font(.title2)
-                        .navigationTitle("Story")
                     HStack {
                         Text(story.by)
                             .font(.caption)
@@ -43,5 +42,6 @@ struct StoryDetailView: View {
         .task {
             await commentVM.load(rootIDs: story.kids ?? [])
         }
+        .navigationTitle("Story")
     }
 }

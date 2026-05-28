@@ -12,12 +12,10 @@ struct CommentRow: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            let bodyText = node.comment.isValid ? node.comment.textWithoutHTMLTag : "[deleted]"
-            Text(bodyText)
+            Text(node.comment.displayText)
                 .font(.body)
             HStack {
-                let authorName = node.comment.isValid ? node.comment.by ?? "" : "[deleted]"
-                Text(authorName)
+                Text(node.comment.displayAuthor)
                     .font(.footnote)
                     .foregroundStyle(.secondary)
                 Text(node.comment.time, format: .relative(presentation: .named))
