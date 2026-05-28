@@ -7,70 +7,8 @@
 
 import SwiftUI
 
-struct StoryRow: View {
-    let story: Story
-
-    var body: some View {
-        VStack(alignment: .leading) {
-            Text(story.title)
-                .font(.headline)
-            HStack {
-                Text(story.by)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                Text("\(story.score)")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                Text("\(story.descendants ?? 0)")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
-        }
-    }
-}
-
-struct ErrorRow: View {
-    var error: Error
-    var retry: () async -> Void
-    
-    var body: some View {
-        VStack {
-            Text(error.localizedDescription)
-                .font(.caption)
-                .foregroundColor(.secondary)
-            Button("Retry") {
-                Task { await retry() }
-            }
-        }
-    }
-}
-
-struct StoryDetailView: View {
-    var story: Story
-    
-    var body: some View {
-        VStack(alignment: .leading) {
-            Text(story.title)
-                .font(.title2)
-                .navigationTitle("Story")
-            HStack {
-                Text(story.by)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                Text("\(story.score)")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
-            if let stringURL = story.url, let url = URL(string: stringURL) {
-                Link("Read article", destination: url)
-            }
-            Spacer()
-        }
-    }
-}
-
 struct ContentView: View {
-    @State private var viewModel = StoryListViewModel(service: HackerNewsService())
+    @State private var viewModel = StoryViewModel(service: HackerNewsService())
     
     var body: some View {
         NavigationStack {

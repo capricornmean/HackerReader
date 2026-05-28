@@ -13,7 +13,22 @@ enum FetchError: Error {
     case responseError(Int)
 }
 
-struct HackerNewsService: StoryFetchingProtocol {
+struct HackerNewsService {
+    private static let decoder: JSONDecoder = {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .secondsSince1970
+        return decoder
+    }()
+
+    private func fetchHelper<T: Decodable>(_ url: URL) async throws -> T {
+        let (data, response) = try await URLSession.shared.data(from: url)
+        guard let statusCode = (response as? HTTPURLResponse)?.statusCode else { throw FetchError.invalidResponse }
+        guard (200..<300).contains(statusCode) else { throw FetchError.responseError(statusCode) }
+        return try Self.decoder.decode(T.self, from: data)
+    }
+}
+
+extension HackerNewsService: StoryFetchingProtocol {
     func fetchTopStoryIDs() async throws -> [Int] {
         guard let url = URL(string: "https://hacker-news.firebaseio.com/v0/topstories.json") else { throw FetchError.invalidURL }
         return try await fetchHelper(url)
@@ -46,11 +61,10 @@ struct HackerNewsService: StoryFetchingProtocol {
         guard let url = URL(string: "https://hacker-news.firebaseio.com/v0/item/\(id).json") else { throw FetchError.invalidURL }
         return try await fetchHelper(url)
     }
-    
-    private func fetchHelper<T: Decodable>(_ url: URL) async throws -> T {
-        let (data, response) = try await URLSession.shared.data(from: url)
-        guard let statusCode = (response as? HTTPURLResponse)?.statusCode else { throw FetchError.invalidResponse }
-        guard (200..<300).contains(statusCode) else { throw FetchError.responseError(statusCode) }
-        return try JSONDecoder().decode(T.self, from: data)
+}
+
+extension HackerNewsService: CommentFetchingProtocol {
+    func fetchCommentTree(rootIDs: [Int]) async -> [CommentNode] {
+        <#code#>
     }
 }

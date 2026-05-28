@@ -1,5 +1,5 @@
 //
-//  StoryListViewModel.swift
+//  StoryViewModel.swift
 //  HackerReader
 //
 //  Created by mai on 5/24/26.
@@ -8,7 +8,7 @@
 import Foundation
 
 @MainActor @Observable
-class StoryListViewModel {
+class StoryViewModel {
     private var storyIDs: [Int] = []
     private(set) var stories: [Story] = []
     private(set) var isLoading: Bool = false

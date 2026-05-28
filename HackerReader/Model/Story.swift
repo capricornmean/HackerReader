@@ -7,13 +7,6 @@
 
 import Foundation
 
-enum Type: String, Decodable {
-    case story = "story"
-    case job = "job"
-    case poll = "poll"
-    case comment = "comment"
-}
-
 struct Story: Decodable, Identifiable, Hashable {
     let by: String
     let descendants: Int?
