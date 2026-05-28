@@ -17,6 +17,10 @@ struct Comment: Decodable, Identifiable, Hashable {
     let type: HNItemType
     let deleted: Bool?
     let dead: Bool?
+
+    var isValid: Bool { !(deleted == true || dead == true) }
+    
+    var textWithoutHTMLTag: String { text?.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression) ?? "" }
 }
 
 struct CommentNode: Identifiable {
@@ -24,12 +28,4 @@ struct CommentNode: Identifiable {
     let depth: Int
     
     var id: Int { comment.id }
-    
-    func isValid() -> Bool {
-        !(comment.deleted == true || comment.dead == true)
-    }
-    
-    func getText() -> String {
-        comment.text?.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression) ?? ""
-    }
 }

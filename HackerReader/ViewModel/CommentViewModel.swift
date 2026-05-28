@@ -19,7 +19,8 @@ class CommentViewModel {
     }
     
     func load(rootIDs: [Int]) async {
-        guard !isLoading, !rootIDs.isEmpty else {
+        guard !isLoading else { return }
+        guard !rootIDs.isEmpty else {
             nodes = []
             return
         }

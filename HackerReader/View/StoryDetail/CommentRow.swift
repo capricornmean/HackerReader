@@ -12,12 +12,12 @@ struct CommentRow: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            let text = node.isValid() ? node.getText() : "[deleted]"
-            Text(text)
+            let bodyText = node.comment.isValid ? node.comment.textWithoutHTMLTag : "[deleted]"
+            Text(bodyText)
                 .font(.body)
             HStack {
-                let text = node.isValid() ? node.comment.by ?? "" : "[deleted]"
-                Text(text)
+                let authorName = node.comment.isValid ? node.comment.by ?? "" : "[deleted]"
+                Text(authorName)
                     .font(.footnote)
                     .foregroundStyle(.secondary)
                 Text(node.comment.time, format: .relative(presentation: .named))
@@ -25,6 +25,6 @@ struct CommentRow: View {
                     .foregroundStyle(.secondary)
             }
         }
-        .padding(.leading, CGFloat(node.depth) * 12)
+        .padding(.leading, CGFloat(min(node.depth, 8)) * 12)
     }
 }
