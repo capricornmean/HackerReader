@@ -12,6 +12,7 @@ import SwiftData
 final class StoredStory {
     var by: String
     var descendants: Int?
+    @Attribute(.unique) var id: Int
     var kids: [Int]?
     var score: Int
     var time: Date
@@ -19,18 +20,16 @@ final class StoredStory {
     var type: HNItemType
     var url: String?
     
-    @Attribute(.unique) var id: Int
-    
-    init(by: String, descendants: Int? = nil, kids: [Int]? = nil, score: Int, time: Date, title: String, type: HNItemType, url: String? = nil, id: Int) {
+    init(by: String, descendants: Int? = nil, id: Int, kids: [Int]? = nil, score: Int, time: Date, title: String, type: HNItemType, url: String? = nil) {
         self.by = by
         self.descendants = descendants
+        self.id = id
         self.kids = kids
         self.score = score
         self.time = time
         self.title = title
         self.type = type
         self.url = url
-        self.id = id
     }
 }
 
