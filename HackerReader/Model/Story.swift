@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Story: Decodable, Identifiable, Hashable {
+struct Story: Codable, Identifiable, Hashable {
     let by: String
     let descendants: Int?
     let id: Int

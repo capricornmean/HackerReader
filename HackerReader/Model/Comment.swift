@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Comment: Decodable, Identifiable, Hashable {
+struct Comment: Codable, Identifiable, Hashable {
     let by: String?
     let id: Int
     let kids: [Int]?

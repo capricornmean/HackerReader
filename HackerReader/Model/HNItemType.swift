@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum HNItemType: String, Decodable {
+enum HNItemType: String, Codable {
     case story
     case job
     case poll
