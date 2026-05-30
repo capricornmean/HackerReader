@@ -10,16 +10,16 @@ import SwiftData
 
 @main
 struct HackerReaderApp: App {
-    let modelContainer: ModelContainer
+    let container: ModelContainer
     
     var body: some Scene {
         WindowGroup {
             StoryListView()
         }
-        .modelContainer(modelContainer)
+        .modelContainer(container)
     }
     
-    init () {
-        modelContainer = try! ModelContainer(for: StoredStory.self)
+    init() {
+        container = try! ModelContainer(for: StoredStory.self)
     }
 }
