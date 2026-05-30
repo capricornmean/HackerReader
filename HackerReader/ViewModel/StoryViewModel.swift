@@ -15,10 +15,11 @@ class StoryViewModel {
     private(set) var error: Error?
     private var offset: Int = 0
     
-    private let service: StoryFetchingProtocol
+    private let storyFetchingService: StoryFetchingProtocol
+    private let storyStorageService: StoryStorageProtocol
 
-    init(service: StoryFetchingProtocol) {
-        self.service = service
+    init(storyFetchingService: StoryFetchingProtocol) {
+        self.storyFetchingService = storyFetchingService
     }
     
     func loadInitial() async {
@@ -31,7 +32,7 @@ class StoryViewModel {
         isLoading = true
         defer { isLoading = false }
         let newStoryIDs = Array(storyIDs[offset..<min(offset + 20, storyIDs.count)])
-        let newStories = await service.fetchStories(ids: newStoryIDs)
+        let newStories = await storyFetchingService.fetchStories(ids: newStoryIDs)
         stories.append(contentsOf: newStories)
         offset += newStoryIDs.count
     }
@@ -51,7 +52,7 @@ class StoryViewModel {
         isLoading = true
         defer { isLoading = false }
         do {
-            storyIDs = try await service.fetchTopStoryIDs()
+            storyIDs = try await storyFetchingService.fetchTopStoryIDs()
         } catch {
             self.error = error
         }

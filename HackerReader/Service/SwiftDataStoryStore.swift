@@ -26,25 +26,28 @@ import SwiftData
     }
     
     func save(_ stories: [Story]) async {
-        for story in stories {
-            let storyID = story.id
-            var descriptor = FetchDescriptor<StoredStory>(predicate: #Predicate{ $0.id == storyID })
-            descriptor.fetchLimit = 1
-            let existing = try? context.fetch(descriptor).first
-            if let existing {
-                existing.by = story.by
-                existing.descendants = story.descendants
-                existing.id = story.id
-                existing.kids = story.kids
-                existing.score = story.score
-                existing.time = story.time
-                existing.title = story.title
-                existing.type = story.type
-                existing.url = story.url
-            } else {
-                context.insert(StoredStory(from: story))
+        do {
+            for story in stories {
+                let storyID = story.id
+                var descriptor = FetchDescriptor<StoredStory>(predicate: #Predicate{ $0.id == storyID })
+                descriptor.fetchLimit = 1
+                let existing = try context.fetch(descriptor).first
+                if let existing {
+                    existing.by = story.by
+                    existing.descendants = story.descendants
+                    existing.kids = story.kids
+                    existing.score = story.score
+                    existing.time = story.time
+                    existing.title = story.title
+                    existing.type = story.type
+                    existing.url = story.url
+                } else {
+                    context.insert(StoredStory(from: story))
+                }
             }
+            try context.save()
+        } catch {
+            print(error)
         }
-        try? context.save()
     }
 }
