@@ -37,13 +37,13 @@ extension StoredStory {
     convenience init(from story: Story) {
         self.init(by: story.by,
                   descendants: story.descendants,
+                  id: story.id,
                   kids: story.kids,
                   score: story.score,
                   time: story.time,
                   title: story.title,
                   type: story.type,
-                  url: story.url,
-                  id: story.id)
+                  url: story.url)
     }
     
     var asStory: Story {

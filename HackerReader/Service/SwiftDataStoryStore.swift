@@ -9,18 +9,42 @@ import Foundation
 import SwiftData
 
 @MainActor final class SwiftDataStoryStore: StoryStorageProtocol {
+    private let context: ModelContext
+    
+    init(context: ModelContext) {
+        self.context = context
+    }
+    
     func fetchCached() async -> [Story] {
-        let descriptor = FetchDescriptor<StoredStory>()
+        let descriptor = FetchDescriptor<StoredStory>(sortBy: [SortDescriptor(\.time, order: .reverse)])
+        do {
+            return try context.fetch(descriptor).map(\.asStory)
+        } catch {
+            print(error)
+            return []
+        }
     }
     
     func save(_ stories: [Story]) async {
         for story in stories {
             let storyID = story.id
-            let descriptor = FetchDescriptor<StoredStory>(predicate: #Predicate{ $0.id == storyID })
-            try context.fetch(descriptor)
+            var descriptor = FetchDescriptor<StoredStory>(predicate: #Predicate{ $0.id == storyID })
+            descriptor.fetchLimit = 1
+            let existing = try? context.fetch(descriptor).first
+            if let existing {
+                existing.by = story.by
+                existing.descendants = story.descendants
+                existing.id = story.id
+                existing.kids = story.kids
+                existing.score = story.score
+                existing.time = story.time
+                existing.title = story.title
+                existing.type = story.type
+                existing.url = story.url
+            } else {
+                context.insert(StoredStory(from: story))
+            }
         }
-        try context.save()
+        try? context.save()
     }
-    
-    
 }
