@@ -15,16 +15,23 @@ class StoryViewModel {
     private(set) var error: Error?
     private var offset: Int = 0
     
-    private let storyFetchingService: StoryFetchingProtocol
-    private let storyStorageService: StoryStorageProtocol
+    private let service: StoryFetchingProtocol
+    private let storage: StoryStorageProtocol
 
-    init(storyFetchingService: StoryFetchingProtocol) {
-        self.storyFetchingService = storyFetchingService
+    init(service: StoryFetchingProtocol, storage: StoryStorageProtocol) {
+        self.service = service
+        self.storage = storage
     }
     
     func loadInitial() async {
+        let cached = await storage.fetchCached()
+        if !cached.isEmpty { stories = cached }
         await fetchTopStoryIDs()
-        await loadMore()
+        let firstPageIDs = Array(storyIDs[0..<20])
+        let freshFirstPage = await service.fetchStories(ids: firstPageIDs)
+        stories = freshFirstPage
+        offset = firstPageIDs.count
+        await storage.save(stories)
     }
     
     func loadMore() async {
@@ -32,8 +39,9 @@ class StoryViewModel {
         isLoading = true
         defer { isLoading = false }
         let newStoryIDs = Array(storyIDs[offset..<min(offset + 20, storyIDs.count)])
-        let newStories = await storyFetchingService.fetchStories(ids: newStoryIDs)
+        let newStories = await service.fetchStories(ids: newStoryIDs)
         stories.append(contentsOf: newStories)
+        await storage.save(stories)
         offset += newStoryIDs.count
     }
     
@@ -52,7 +60,7 @@ class StoryViewModel {
         isLoading = true
         defer { isLoading = false }
         do {
-            storyIDs = try await storyFetchingService.fetchTopStoryIDs()
+            storyIDs = try await service.fetchTopStoryIDs()
         } catch {
             self.error = error
         }

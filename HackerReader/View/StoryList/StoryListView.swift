@@ -6,9 +6,10 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct StoryListView: View {
-    @State private var storyVM = StoryViewModel(service: HackerNewsService())
+    @State private var storyVM: StoryViewModel
     
     var body: some View {
         NavigationStack {
@@ -47,8 +48,12 @@ struct StoryListView: View {
             await storyVM.loadInitial()
         }
     }
+
+    init(service: StoryFetchingProtocol, storage: StoryStorageProtocol) {
+        _storyVM = State(wrappedValue: StoryViewModel(service: service, storage: storage))
+    }
 }
 
-#Preview {
-    StoryListView()
-}
+//#Preview {
+//    StoryListView(service: HackerNewsService(), storage: SwiftDataStoryStore(context: try! ModelContainer(for: StoredStory.self).mainContext))
+//}

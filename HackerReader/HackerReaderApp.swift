@@ -11,15 +11,17 @@ import SwiftData
 @main
 struct HackerReaderApp: App {
     let container: ModelContainer
+    let storyStorage: SwiftDataStoryStore
     
     var body: some Scene {
         WindowGroup {
-            StoryListView()
+            StoryListView(service: HackerNewsService(), storage: storyStorage)
         }
         .modelContainer(container)
     }
     
     init() {
         container = try! ModelContainer(for: StoredStory.self)
+        storyStorage = SwiftDataStoryStore(context: container.mainContext)
     }
 }
