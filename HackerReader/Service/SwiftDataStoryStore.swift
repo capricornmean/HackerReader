@@ -16,7 +16,7 @@ import SwiftData
     }
     
     func fetchCached() async -> [Story] {
-        let descriptor = FetchDescriptor<StoredStory>(sortBy: [SortDescriptor(\.time, order: .reverse)])
+        let descriptor = FetchDescriptor<StoredStory>(sortBy: [SortDescriptor(\.rank, order: .forward)])
         do {
             return try context.fetch(descriptor).map(\.asStory)
         } catch {
@@ -27,7 +27,7 @@ import SwiftData
     
     func save(_ stories: [Story]) async {
         do {
-            for story in stories {
+            for (index, story) in stories.enumerated() {
                 let storyID = story.id
                 var descriptor = FetchDescriptor<StoredStory>(predicate: #Predicate{ $0.id == storyID })
                 descriptor.fetchLimit = 1
@@ -41,8 +41,9 @@ import SwiftData
                     existing.title = story.title
                     existing.type = story.type
                     existing.url = story.url
+                    existing.rank = index
                 } else {
-                    context.insert(StoredStory(from: story))
+                    context.insert(StoredStory(from: story, rank: index))
                 }
             }
             try context.save()

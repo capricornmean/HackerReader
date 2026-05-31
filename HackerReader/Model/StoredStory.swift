@@ -19,8 +19,9 @@ final class StoredStory {
     var title: String
     var type: HNItemType
     var url: String?
+    var rank: Int
     
-    init(by: String, descendants: Int? = nil, id: Int, kids: [Int]? = nil, score: Int, time: Date, title: String, type: HNItemType, url: String? = nil) {
+    init(by: String, descendants: Int? = nil, id: Int, kids: [Int]? = nil, score: Int, time: Date, title: String, type: HNItemType, url: String? = nil, rank: Int) {
         self.by = by
         self.descendants = descendants
         self.id = id
@@ -30,11 +31,12 @@ final class StoredStory {
         self.title = title
         self.type = type
         self.url = url
+        self.rank = rank
     }
 }
 
 extension StoredStory {
-    convenience init(from story: Story) {
+    convenience init(from story: Story, rank: Int) {
         self.init(by: story.by,
                   descendants: story.descendants,
                   id: story.id,
@@ -43,7 +45,8 @@ extension StoredStory {
                   time: story.time,
                   title: story.title,
                   type: story.type,
-                  url: story.url)
+                  url: story.url,
+                  rank: rank)
     }
     
     var asStory: Story {
