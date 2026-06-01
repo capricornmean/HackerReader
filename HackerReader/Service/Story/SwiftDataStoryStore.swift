@@ -27,12 +27,14 @@ import SwiftData
     
     func save(_ stories: [Story]) async {
         do {
+            // prune stale cache
             let newIDs = Set(stories.map(\.id))
             let staleDescriptor = FetchDescriptor<StoredStory>(predicate: #Predicate {!newIDs.contains($0.id)})
             let staleRows = try context.fetch(staleDescriptor)
             for row in staleRows {
                 context.delete(row)
             }
+            // add new cache
             for (index, story) in stories.enumerated() {
                 let storyID = story.id
                 var existDescriptor = FetchDescriptor<StoredStory>(predicate: #Predicate{ $0.id == storyID })

@@ -20,8 +20,9 @@ final class StoredStory {
     var type: HNItemType
     var url: String?
     var rank: Int
+    @Relationship(deleteRule: .cascade, inverse: \StoredComment.story) var comments: [StoredComment] = []
     
-    init(by: String, descendants: Int? = nil, id: Int, kids: [Int]? = nil, score: Int, time: Date, title: String, type: HNItemType, url: String? = nil, rank: Int) {
+    init(by: String, descendants: Int? = nil, id: Int, kids: [Int]? = nil, score: Int, time: Date, title: String, type: HNItemType, url: String? = nil, rank: Int, comments: [StoredComment] = []) {
         self.by = by
         self.descendants = descendants
         self.id = id
@@ -32,6 +33,7 @@ final class StoredStory {
         self.type = type
         self.url = url
         self.rank = rank
+        self.comments = comments
     }
 }
 
