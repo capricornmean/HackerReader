@@ -27,11 +27,17 @@ import SwiftData
     
     func save(_ stories: [Story]) async {
         do {
+            let newIDs = Set(stories.map(\.id))
+            let staleDescriptor = FetchDescriptor<StoredStory>(predicate: #Predicate {!newIDs.contains($0.id)})
+            let staleRows = try context.fetch(staleDescriptor)
+            for row in staleRows {
+                context.delete(row)
+            }
             for (index, story) in stories.enumerated() {
                 let storyID = story.id
-                var descriptor = FetchDescriptor<StoredStory>(predicate: #Predicate{ $0.id == storyID })
-                descriptor.fetchLimit = 1
-                let existing = try context.fetch(descriptor).first
+                var existDescriptor = FetchDescriptor<StoredStory>(predicate: #Predicate{ $0.id == storyID })
+                existDescriptor.fetchLimit = 1
+                let existing = try context.fetch(existDescriptor).first
                 if let existing {
                     existing.by = story.by
                     existing.descendants = story.descendants
