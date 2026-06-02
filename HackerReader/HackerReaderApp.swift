@@ -22,11 +22,7 @@ struct HackerReaderApp: App {
     }
     
     init() {
-        guard let baseURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.mai.HackerReader") else {
-            fatalError("Entitlement isn't applied")
-        }
-        let fileURL = baseURL.appending(path: "HackerReader.sqlite")
-        let config = ModelConfiguration(url: fileURL)
+        let config = ContainerConstruction.getModelConfiguration()
         container = try! ModelContainer(for: StoredStory.self, StoredComment.self, configurations: config)
         storyStorage = SwiftDataStoryStore(context: container.mainContext)
         commentStorage = SwiftDataCommentStore(context: container.mainContext)
