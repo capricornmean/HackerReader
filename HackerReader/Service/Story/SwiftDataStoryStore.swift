@@ -29,7 +29,7 @@ import SwiftData
         do {
             // prune stale cache
             let newIDs = Set(stories.map(\.id))
-            let staleDescriptor = FetchDescriptor<StoredStory>(predicate: #Predicate {!newIDs.contains($0.id)})
+            let staleDescriptor = FetchDescriptor<StoredStory>(predicate: #Predicate{ !newIDs.contains($0.id) })
             let staleRows = try context.fetch(staleDescriptor)
             for row in staleRows {
                 context.delete(row)

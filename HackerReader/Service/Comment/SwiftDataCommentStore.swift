@@ -5,7 +5,6 @@
 //  Created by mai on 6/1/26.
 //
 
-
 import Foundation
 import SwiftData
 
@@ -35,9 +34,17 @@ import SwiftData
             guard let storedStory = try context.fetch(storyDescriptor).first else {
                 return
             }
+            // prune stale cache
             let newIDs = Set(nodes.map(\.comment.id))
+            let staleCommentDescriptor = FetchDescriptor<StoredComment>(predicate: #Predicate{ !newIDs.contains($0.id) })
+            let staleRows = try context.fetch(staleCommentDescriptor)
+            for row in staleRows {
+                context.delete(row)
+            }
+            // add new cache
             for (index, node) in nodes.enumerated() {
-                var commentDescriptor = FetchDescriptor<StoredComment>(predicate: #Predicate{ $0.id == node.id })
+                let commentID = node.id
+                var commentDescriptor = FetchDescriptor<StoredComment>(predicate: #Predicate{ $0.id == commentID })
                 commentDescriptor.fetchLimit = 1
                 if let storedComment = try context.fetch(commentDescriptor).first {
                     storedComment.by = node.comment.by
