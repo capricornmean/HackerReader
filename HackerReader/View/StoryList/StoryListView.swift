@@ -10,6 +10,8 @@ import SwiftData
 
 struct StoryListView: View {
     @State private var storyVM: StoryViewModel
+    private let service: StoryFetchingProtocol & CommentFetchingProtocol
+    private let commentStorage: CommentStorageProtocol
     
     var body: some View {
         NavigationStack {
@@ -40,7 +42,7 @@ struct StoryListView: View {
                     }
                 }
                 .navigationDestination(for: Story.self) { story in
-                    StoryDetailView(story: story)
+                    StoryDetailView(story: story, service: service, storage: commentStorage)
                 }
             }
         }
@@ -49,8 +51,10 @@ struct StoryListView: View {
         }
     }
 
-    init(service: StoryFetchingProtocol, storage: StoryStorageProtocol) {
-        _storyVM = State(wrappedValue: StoryViewModel(service: service, storage: storage))
+    init(service: StoryFetchingProtocol & CommentFetchingProtocol, storyStorage: StoryStorageProtocol, commentStorage: CommentStorageProtocol) {
+        _storyVM = State(wrappedValue: StoryViewModel(service: service, storage: storyStorage))
+        self.service = service
+        self.commentStorage = commentStorage
     }
 }
 

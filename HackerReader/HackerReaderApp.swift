@@ -12,10 +12,11 @@ import SwiftData
 struct HackerReaderApp: App {
     let container: ModelContainer
     let storyStorage: SwiftDataStoryStore
+    let commentStorage: SwiftDataCommentStore
     
     var body: some Scene {
         WindowGroup {
-            StoryListView(service: HackerNewsService(), storage: storyStorage)
+            StoryListView(service: HackerNewsService(), storyStorage: storyStorage, commentStorage: commentStorage)
         }
         .modelContainer(container)
     }
@@ -23,5 +24,6 @@ struct HackerReaderApp: App {
     init() {
         container = try! ModelContainer(for: StoredStory.self, StoredComment.self)
         storyStorage = SwiftDataStoryStore(context: container.mainContext)
+        commentStorage = SwiftDataCommentStore(context: container.mainContext)
     }
 }

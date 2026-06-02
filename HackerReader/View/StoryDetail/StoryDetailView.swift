@@ -9,7 +9,8 @@ import SwiftUI
 
 struct StoryDetailView: View {
     var story: Story
-    @State private var commentVM = CommentViewModel(service: HackerNewsService())
+    private var rootIDs: [Int]
+    @State private var commentVM: CommentViewModel
     
     var body: some View {
         List {
@@ -40,8 +41,14 @@ struct StoryDetailView: View {
             }
         }
         .task {
-            await commentVM.load(rootIDs: story.kids ?? [])
+            await commentVM.load(rootIDs: rootIDs)
         }
         .navigationTitle("Story")
+    }
+    
+    init(story: Story, service: CommentFetchingProtocol, storage: CommentStorageProtocol) {
+        self.story = story
+        self.rootIDs = story.kids ?? []
+        _commentVM = State(wrappedValue: CommentViewModel(service: service, rootIDs: rootIDs, storyID: story.id, storage: storage))
     }
 }

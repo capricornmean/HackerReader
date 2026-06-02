@@ -26,6 +26,8 @@ class StoryViewModel {
     func loadInitial() async {
         let cached = await storage.fetchCached()
         if !cached.isEmpty { stories = cached }
+        isLoading = true
+        defer { isLoading = false }
         await fetchTopStoryIDs()
         let firstPageIDs = Array(storyIDs[0..<20])
         let freshFirstPage = await service.fetchStories(ids: firstPageIDs)
