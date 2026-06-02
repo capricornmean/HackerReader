@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-class StoredComment {
+final class StoredComment {
     var by: String?
     @Attribute(.unique) var id: Int
     var kids: [Int]?
@@ -19,8 +19,8 @@ class StoredComment {
     var type: HNItemType
     var deleted: Bool?
     var dead: Bool?
-    var rank: Int
     var depth: Int
+    var rank: Int
     var story: StoredStory?
     
     init(by: String? = nil, id: Int, kids: [Int]? = nil, parent: Int, text: String? = nil, time: Date, type: HNItemType, deleted: Bool? = nil, dead: Bool? = nil, depth: Int, rank: Int, story: StoredStory? = nil) {

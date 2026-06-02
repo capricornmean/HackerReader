@@ -21,7 +21,7 @@ struct HackerReaderApp: App {
     }
     
     init() {
-        container = try! ModelContainer(for: StoredStory.self)
+        container = try! ModelContainer(for: StoredStory.self, StoredComment.self)
         storyStorage = SwiftDataStoryStore(context: container.mainContext)
     }
 }

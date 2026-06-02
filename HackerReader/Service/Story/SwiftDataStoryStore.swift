@@ -16,8 +16,8 @@ import SwiftData
     }
     
     func fetchCached() async -> [Story] {
-        let descriptor = FetchDescriptor<StoredStory>(sortBy: [SortDescriptor(\.rank, order: .forward)])
         do {
+            let descriptor = FetchDescriptor<StoredStory>(sortBy: [SortDescriptor(\.rank, order: .forward)])
             return try context.fetch(descriptor).map(\.asStory)
         } catch {
             print(error)
@@ -39,8 +39,7 @@ import SwiftData
                 let storyID = story.id
                 var existDescriptor = FetchDescriptor<StoredStory>(predicate: #Predicate{ $0.id == storyID })
                 existDescriptor.fetchLimit = 1
-                let existing = try context.fetch(existDescriptor).first
-                if let existing {
+                if let existing = try context.fetch(existDescriptor).first{
                     existing.by = story.by
                     existing.descendants = story.descendants
                     existing.kids = story.kids
