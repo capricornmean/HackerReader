@@ -7,5 +7,6 @@
 
 protocol StoryStorageProtocol {
     func fetchCached() async -> [Story]
+    func fetchCached(id: Int) async -> Story?
     func save(_ stories: [Story]) async
 }

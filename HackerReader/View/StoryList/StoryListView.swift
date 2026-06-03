@@ -12,9 +12,10 @@ struct StoryListView: View {
     @State private var storyVM: StoryViewModel
     private let service: StoryFetchingProtocol & CommentFetchingProtocol
     private let commentStorage: CommentStorageProtocol
+    @State private var path: [Story] = []
     
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             if let error = storyVM.error, storyVM.stories.isEmpty {
                 ErrorRow(error: error) {
                     await storyVM.retryInitial()
@@ -48,6 +49,16 @@ struct StoryListView: View {
         }
         .task {
             await storyVM.loadInitial()
+        }
+        .onOpenURL { url in
+            guard url.host == "story", let storyID = Int(url.lastPathComponent) else {
+                return
+            }
+            Task {
+                if let story = await storyVM.fetchCached(id: storyID) {
+                    path.append(story)
+                }
+            }
         }
     }
 

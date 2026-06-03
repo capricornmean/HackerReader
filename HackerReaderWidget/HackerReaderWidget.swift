@@ -77,6 +77,7 @@ struct HackerReaderWidgetEntryView : View {
                         .foregroundStyle(.secondary)
                 }
             }
+            .widgetURL(URL(string: "hackerreader://story/\(story.id)"))
         } else {
             Text("Open HackerReader")
         }

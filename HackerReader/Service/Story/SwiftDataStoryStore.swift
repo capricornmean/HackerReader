@@ -24,6 +24,11 @@ import SwiftData
             return []
         }
     }
+
+    func fetchCached(id: Int) async -> Story? {
+        let stories = await fetchCached()
+        return stories.first(where: { $0.id == id })
+    }
     
     func save(_ stories: [Story]) async {
         do {

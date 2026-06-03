@@ -57,6 +57,10 @@ class StoryViewModel {
         await loadMore()
     }
     
+    func fetchCached(id: Int) async -> Story? {
+        return await storage.fetchCached(id: id)
+    }
+    
     // MARK: - Private
     private func fetchTopStoryIDs() async {
         isLoading = true
