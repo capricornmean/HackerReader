@@ -36,7 +36,7 @@ import SwiftData
             }
             // prune stale cache
             let newIDs = Set(nodes.map(\.comment.id))
-            let staleCommentDescriptor = FetchDescriptor<StoredComment>(predicate: #Predicate{ !newIDs.contains($0.id) })
+            let staleCommentDescriptor = FetchDescriptor<StoredComment>(predicate: #Predicate{ !newIDs.contains($0.id) && $0.parent == storyID })
             let staleRows = try context.fetch(staleCommentDescriptor)
             for row in staleRows {
                 context.delete(row)

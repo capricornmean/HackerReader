@@ -15,6 +15,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		2B4309952FD09A6F004B5EBF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2B833C482FC1F4F70006C2CB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2B833C4F2FC1F4F70006C2CB;
+			remoteInfo = HackerReader;
+		};
 		2B522A402FCE88E800753698 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 2B833C482FC1F4F70006C2CB /* Project object */;
@@ -40,6 +47,7 @@
 
 /* Begin PBXFileReference section */
 		2B43098C2FCF9DD7004B5EBF /* HackerReaderWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HackerReaderWidgetExtension.entitlements; sourceTree = "<group>"; };
+		2B4309912FD09A6F004B5EBF /* HackerReaderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HackerReaderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B522A1B2FCE888D00753698 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = /System/Library/Frameworks/WidgetKit.framework; sourceTree = "<absolute>"; };
 		2B522A1D2FCE888D00753698 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = /System/Library/Frameworks/SwiftUI.framework; sourceTree = "<absolute>"; };
 		2B522A352FCE88E700753698 /* HackerReaderWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = HackerReaderWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -48,6 +56,23 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		2B43099B2FD09ED1004B5EBF /* Exceptions for "HackerReader" folder in "HackerReaderTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Model/Comment/Comment.swift,
+				Model/Comment/StoredComment.swift,
+				Model/HNItemType.swift,
+				Model/Story/StoredStory.swift,
+				Model/Story/Story.swift,
+				Service/Comment/CommentStorageProtocol.swift,
+				Service/Comment/SwiftDataCommentStore.swift,
+				Service/Story/StoryFetchingProtocol.swift,
+				Service/Story/StoryStorageProtocol.swift,
+				Service/Story/SwiftDataStoryStore.swift,
+				ViewModel/StoryViewModel.swift,
+			);
+			target = 2B4309902FD09A6F004B5EBF /* HackerReaderTests */;
+		};
 		2B522A432FCE88E800753698 /* Exceptions for "HackerReaderWidget" folder in "HackerReaderWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -71,6 +96,11 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		2B4309922FD09A6F004B5EBF /* HackerReaderTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = HackerReaderTests;
+			sourceTree = "<group>";
+		};
 		2B522A382FCE88E700753698 /* HackerReaderWidget */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -83,6 +113,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				2B522A4A2FCE8DF400753698 /* Exceptions for "HackerReader" folder in "HackerReaderWidgetExtension" target */,
+				2B43099B2FD09ED1004B5EBF /* Exceptions for "HackerReader" folder in "HackerReaderTests" target */,
 			);
 			path = HackerReader;
 			sourceTree = "<group>";
@@ -90,6 +121,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		2B43098E2FD09A6F004B5EBF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2B522A322FCE88E700753698 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -125,6 +163,7 @@
 				2B522A4F2FCF4C1D00753698 /* ContainerConstruction.swift */,
 				2B833C522FC1F4F70006C2CB /* HackerReader */,
 				2B522A382FCE88E700753698 /* HackerReaderWidget */,
+				2B4309922FD09A6F004B5EBF /* HackerReaderTests */,
 				2B522A1A2FCE888D00753698 /* Frameworks */,
 				2B833C512FC1F4F70006C2CB /* Products */,
 			);
@@ -135,6 +174,7 @@
 			children = (
 				2B833C502FC1F4F70006C2CB /* HackerReader.app */,
 				2B522A352FCE88E700753698 /* HackerReaderWidgetExtension.appex */,
+				2B4309912FD09A6F004B5EBF /* HackerReaderTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -142,6 +182,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		2B4309902FD09A6F004B5EBF /* HackerReaderTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2B4309972FD09A6F004B5EBF /* Build configuration list for PBXNativeTarget "HackerReaderTests" */;
+			buildPhases = (
+				2B43098D2FD09A6F004B5EBF /* Sources */,
+				2B43098E2FD09A6F004B5EBF /* Frameworks */,
+				2B43098F2FD09A6F004B5EBF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2B4309962FD09A6F004B5EBF /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				2B4309922FD09A6F004B5EBF /* HackerReaderTests */,
+			);
+			name = HackerReaderTests;
+			packageProductDependencies = (
+			);
+			productName = HackerReaderTests;
+			productReference = 2B4309912FD09A6F004B5EBF /* HackerReaderTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		2B522A342FCE88E700753698 /* HackerReaderWidgetExtension */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2B522A442FCE88E800753698 /* Build configuration list for PBXNativeTarget "HackerReaderWidgetExtension" */;
@@ -198,6 +261,10 @@
 				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
+					2B4309902FD09A6F004B5EBF = {
+						CreatedOnToolsVersion = 26.0;
+						TestTargetID = 2B833C4F2FC1F4F70006C2CB;
+					};
 					2B522A342FCE88E700753698 = {
 						CreatedOnToolsVersion = 26.0;
 					};
@@ -222,11 +289,19 @@
 			targets = (
 				2B833C4F2FC1F4F70006C2CB /* HackerReader */,
 				2B522A342FCE88E700753698 /* HackerReaderWidgetExtension */,
+				2B4309902FD09A6F004B5EBF /* HackerReaderTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		2B43098F2FD09A6F004B5EBF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2B522A332FCE88E700753698 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -244,6 +319,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		2B43098D2FD09A6F004B5EBF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2B522A312FCE88E700753698 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -263,6 +345,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		2B4309962FD09A6F004B5EBF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2B833C4F2FC1F4F70006C2CB /* HackerReader */;
+			targetProxy = 2B4309952FD09A6F004B5EBF /* PBXContainerItemProxy */;
+		};
 		2B522A412FCE88E800753698 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 2B522A342FCE88E700753698 /* HackerReaderWidgetExtension */;
@@ -271,6 +358,53 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		2B4309982FD09A6F004B5EBF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = V94GRK7H5Y;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = self.HackerReaderTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HackerReader.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/HackerReader";
+			};
+			name = Debug;
+		};
+		2B4309992FD09A6F004B5EBF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = V94GRK7H5Y;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = self.HackerReaderTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HackerReader.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/HackerReader";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		2B522A452FCE88E800753698 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -564,6 +698,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		2B4309972FD09A6F004B5EBF /* Build configuration list for PBXNativeTarget "HackerReaderTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2B4309982FD09A6F004B5EBF /* Debug */,
+				2B4309992FD09A6F004B5EBF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		2B522A442FCE88E800753698 /* Build configuration list for PBXNativeTarget "HackerReaderWidgetExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

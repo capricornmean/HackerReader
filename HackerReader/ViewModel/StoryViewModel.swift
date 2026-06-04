@@ -29,7 +29,7 @@ class StoryViewModel {
         isLoading = true
         defer { isLoading = false }
         await fetchTopStoryIDs()
-        let firstPageIDs = Array(storyIDs[0..<20])
+        let firstPageIDs = Array(storyIDs[0..<min(storyIDs.count, 20)])
         let freshFirstPage = await service.fetchStories(ids: firstPageIDs)
         stories = freshFirstPage
         offset = firstPageIDs.count
