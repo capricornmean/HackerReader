@@ -33,14 +33,40 @@ import Testing
         let storage = FakeStoryStorage()
         let service = FakeStoryService()
         service.cannedTopIDs = [1, 2, 3]
-        service.cannedStories = [GeneralHelpers.makeStory(id: 1)]
-        let vm = StoryViewModel(service: service, storage: storage)
+        service.cannedStories = [GeneralHelpers.makeStory(id: 1), GeneralHelpers.makeStory(id: 2)]
+        let vm = StoryViewModel(service: service, storage: storage, pageSize: 2)
+        await vm.loadInitial()
+
+        service.cannedStories = [GeneralHelpers.makeStory(id: 3)]
+        await vm.loadMore()
+        #expect(vm.stories.map(\.id) == [1, 2, 3])
+        #expect(storage.savedCalls.count == 2)
+        #expect(storage.savedCalls.last?.map(\.id) == [1, 2, 3])
+    }
+    
+    @Test func reentrancyGuard() async {
+        let storage = FakeStoryStorage()
+        let service = FakeStoryService()
+        service.cannedTopIDs = [1, 2, 3]
+        service.cannedStories = [GeneralHelpers.makeStory(id: 1), GeneralHelpers.makeStory(id: 2)]
+        let vm = StoryViewModel(service: service, storage: storage, pageSize: 2)
         await vm.loadInitial()
         
-//        service.cannedTopIDs = [1, 2, 3]
-        service.cannedStories = [GeneralHelpers.makeStory(id: 1), GeneralHelpers.makeStory(id: 2), GeneralHelpers.makeStory(id: 3)]
+        service.cannedStories = [GeneralHelpers.makeStory(id: 3)]
+        service.pauseFetchStories = true
+        
+        let firstTask = Task { await vm.loadMore() }
+        while service.fetchStoriesCalledCount < 2 {
+            await Task.yield()
+        }
+        
         await vm.loadMore()
-        #expect(storage.savedCalls.count == 2)
-        #expect(storage.savedCalls.last?.map(\.id) == [2, 3])
+        
+        #expect(service.fetchStoriesCalledCount == 2)
+        #expect(storage.savedCalls.count == 1)
+        
+        service.releasePausedFetch()
+        await firstTask.value
+        #expect(vm.stories.map(\.id) == [1, 2, 3])
     }
 }
